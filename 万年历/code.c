@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define MAX_EVENTS 100 // ×î´óÊÂ¼şÊıÁ¿
+#define MAX_EVENTS 100 // æœ€å¤§äº‹ä»¶æ•°é‡
 
 typedef struct {
     int year;
@@ -14,12 +14,12 @@ typedef struct {
 Event events[MAX_EVENTS];
 int event_count = 0;
 
-// ÅĞ¶ÏÊÇ·ñÎªÈòÄê
+// åˆ¤æ–­æ˜¯å¦ä¸ºé—°å¹´
 int is_leap_year(int year) {
     return (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
 }
 
-// »ñÈ¡Ä³ÔÂµÄÌìÊı
+// è·å–æŸæœˆçš„å¤©æ•°
 int get_days_in_month(int year, int month) {
     int days_in_month[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
     if (month == 2 && is_leap_year(year)) {
@@ -29,7 +29,7 @@ int get_days_in_month(int year, int month) {
 }
 
 
-//¼ÆËãÃ¿¸öÔÂµÄµÚÒ»ÌìÊÇĞÇÆÚ¼¸£¬´òÓ¡¸ÃÔÂµÄÈÕÀú 
+//è®¡ç®—æ¯ä¸ªæœˆçš„ç¬¬ä¸€å¤©æ˜¯æ˜ŸæœŸå‡ ï¼Œæ‰“å°è¯¥æœˆçš„æ—¥å† 
 int getFirstDayOfWeek(int year, int month) {
     if (month == 1 || month == 2) {
         month += 12;
@@ -37,12 +37,12 @@ int getFirstDayOfWeek(int year, int month) {
     }
     int c = year / 100;
     int y = year % 100;
-    int d = 1; // µÚÒ»Ìì
+    int d = 1; // ç¬¬ä¸€å¤©
     int w = (d + 2*month + 3*(month+1)/5 + y + y/4 - y/100 + y/400 + 1) % 7;
     return w;
 }
 
- //´òÓ¡Ä³ÄêµÄÄ³ÔÂµÄÈÕÀú
+ //æ‰“å°æŸå¹´çš„æŸæœˆçš„æ—¥å†
 void print_calendar(int year, int month) {
     int days = get_days_in_month(year, month);
      int start_day =0;
@@ -53,8 +53,8 @@ void print_calendar(int year, int month) {
 	{
 		start_day = getFirstDayOfWeek(year,month);
 	}
-    printf("     %dÄê%dÔÂ\n", year, month);
-    printf("ÈÕ Ò» ¶ş Èı ËÄ Îå Áù\n");
+    printf("     %då¹´%dæœˆ\n", year, month);
+    printf("æ—¥ ä¸€ äºŒ ä¸‰ å›› äº” å…­\n");
 
     for (int i = 0; i < start_day; i++) {
         printf("   ");
@@ -70,68 +70,68 @@ void print_calendar(int year, int month) {
 }
 
 
-// Ìí¼ÓÊÂ¼ş
+// æ·»åŠ äº‹ä»¶
 void add_event() {
     if (event_count >= MAX_EVENTS) {
-        printf("ÊÂ¼şÁĞ±íÒÑÂú£¬ÎŞ·¨Ìí¼Ó¸ü¶àÊÂ¼ş¡£\n");
+        printf("äº‹ä»¶åˆ—è¡¨å·²æ»¡ï¼Œæ— æ³•æ·»åŠ æ›´å¤šäº‹ä»¶ã€‚\n");
         return;
     }
     Event e;
-    printf("ÇëÊäÈëÊÂ¼şµÄÄê·İ£º");
+    printf("è¯·è¾“å…¥äº‹ä»¶çš„å¹´ä»½ï¼š");
     scanf("%d", &e.year);
-    printf("ÇëÊäÈëÊÂ¼şµÄÔÂ·İ£º");
+    printf("è¯·è¾“å…¥äº‹ä»¶çš„æœˆä»½ï¼š");
     scanf("%d", &e.month);
-    printf("ÇëÊäÈëÊÂ¼şµÄÈÕÆÚ£º");
+    printf("è¯·è¾“å…¥äº‹ä»¶çš„æ—¥æœŸï¼š");
     scanf("%d", &e.day);
-    printf("ÇëÊäÈëÊÂ¼şÃèÊö£º");
-    getchar(); // Çå³ı»º³åÇø
+    printf("è¯·è¾“å…¥äº‹ä»¶æè¿°ï¼š");
+    getchar(); // æ¸…é™¤ç¼“å†²åŒº
     fgets(e.description, 100, stdin);
-    e.description[strcspn(e.description, "\n")] = '\0'; // ÒÆ³ı»»ĞĞ·û
+    e.description[strcspn(e.description, "\n")] = '\0'; // ç§»é™¤æ¢è¡Œç¬¦
 
     events[event_count++] = e;
-    printf("ÊÂ¼şÒÑÌí¼Ó³É¹¦£¡\n");
+    printf("äº‹ä»¶å·²æ·»åŠ æˆåŠŸï¼\n");
 }
 
-// ²éÑ¯ÊÂ¼ş
+// æŸ¥è¯¢äº‹ä»¶
 void query_event() {
     int year, month, day;
-    printf("ÇëÊäÈë²éÑ¯µÄÄê·İ£º");
+    printf("è¯·è¾“å…¥æŸ¥è¯¢çš„å¹´ä»½ï¼š");
     scanf("%d", &year);
-    printf("ÇëÊäÈë²éÑ¯µÄÔÂ·İ£º");
+    printf("è¯·è¾“å…¥æŸ¥è¯¢çš„æœˆä»½ï¼š");
     scanf("%d", &month);
-    printf("ÇëÊäÈë²éÑ¯µÄÈÕÆÚ£º");
+    printf("è¯·è¾“å…¥æŸ¥è¯¢çš„æ—¥æœŸï¼š");
     scanf("%d", &day);
 
     int found = 0;
     for (int i = 0; i < event_count; i++) {
         if (events[i].year == year && events[i].month == month && events[i].day == day) {
-            printf("ÊÂ¼ş£º%s\n", events[i].description);
+            printf("äº‹ä»¶ï¼š%s\n", events[i].description);
             found = 1;
         }
     }
     if (!found) {
-        printf("Î´ÕÒµ½ÈÎºÎÊÂ¼ş¡£\n");
+        printf("æœªæ‰¾åˆ°ä»»ä½•äº‹ä»¶ã€‚\n");
     }
 }
 
-// Ö÷²Ëµ¥
+// ä¸»èœå•
 void menu() {
     int choice;
     while (1) {
-        printf("\n===== ÍòÄêÀú =====\n");
-        printf("1. ÏÔÊ¾ÈÕÀú\n");
-        printf("2. Ìí¼ÓÊÂ¼ş\n");
-        printf("3. ²éÑ¯ÊÂ¼ş\n");
-        printf("4. ÍË³ö\n");
-        printf("ÇëÊäÈëÄãµÄÑ¡Ôñ£º");
+        printf("\n===== ä¸‡å¹´å† =====\n");
+        printf("1. æ˜¾ç¤ºæ—¥å†\n");
+        printf("2. æ·»åŠ äº‹ä»¶\n");
+        printf("3. æŸ¥è¯¢äº‹ä»¶\n");
+        printf("4. é€€å‡º\n");
+        printf("è¯·è¾“å…¥ä½ çš„é€‰æ‹©ï¼š");
         scanf("%d", &choice);
 
         switch (choice) {
             case 1: {
                 int year, month;
-                printf("ÇëÊäÈëÄê·İ£º");
+                printf("è¯·è¾“å…¥å¹´ä»½ï¼š");
                 scanf("%d", &year);
-                printf("ÇëÊäÈëÔÂ·İ£º");
+                printf("è¯·è¾“å…¥æœˆä»½ï¼š");
                 scanf("%d", &month);
                 print_calendar(year, month);
                 break;
@@ -143,10 +143,10 @@ void menu() {
                 query_event();
                 break;
             case 4:
-                printf("ÔÙ¼û£¡\n");
+                printf("å†è§ï¼\n");
                 exit(0);
             default:
-                printf("ÎŞĞ§Ñ¡Ôñ£¬ÇëÖØĞÂÊäÈë¡£\n");
+                printf("æ— æ•ˆé€‰æ‹©ï¼Œè¯·é‡æ–°è¾“å…¥ã€‚\n");
         }
     }
 }
